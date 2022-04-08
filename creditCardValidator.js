@@ -126,7 +126,6 @@ app.controller('creditValidatorCtrl',['$scope',function($scope){
         block4 = ccNumString.substring(12, 16);
 
         formatted=block1 + block2 + block3 + block4;
-        //document.getElementById('credit-card').value=formatted;
         $scope.cardNumber=formatted;
     }
 }]);
