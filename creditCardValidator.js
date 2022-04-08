@@ -20,7 +20,7 @@ app.controller('creditValidatorCtrl',['$scope',function($scope){
                 $scope.isValid = true;
                 $scope.textColor='green';
                 $scope.cardType = "VISA (valid)";
-            }else if(digits.length == 13 && !$scope.cardNoValidate(n)){
+            }else if((digits.length == 13 || digits.length ==16) && !$scope.cardNoValidate(n)){
                 $scope.textColor='red';
                 $scope.cardType = "VISA (invalid)";
             }
