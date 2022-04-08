@@ -15,7 +15,7 @@
                 <div class="headerText">Credit Card Validation App</div>
                 <input style="background-image:url(image/{{imageName}}.png);"  id="credit-card" name="cardNo" 
                 ng-change="validate(cardNumber)" ng-model="cardNumber" type="text" 
-                placeholder="0000 0000 0000 0000"></br>
+                placeholder="0000 0000 0000 0000" maxlength="19"></br>
                 <div class="validateText" style="color: {{textColor}};" ng-show="cardValidate.cardNo.$dirty && isValid">
                     {{cardType}}
                 </div>

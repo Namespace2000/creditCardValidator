@@ -7,23 +7,25 @@ app.controller('creditValidatorCtrl',['$scope',function($scope){
     $scope.validate = function(n){
         let dWithoutSpace = n.replace(/ /g, "");
         let digits = dWithoutSpace.toString().split('').map(Number);
-        let start1 = n[0];
-        let start2 = n[0]+''+n[1];
-        let start4 = n[0]+''+n[1]+''+n[2]+''+n[3];
-        if(start1 == '4'){
+
+        let amex = new RegExp('^3[47]');
+        let visa = new RegExp('^4');
+        let mastercard = new RegExp('^5[1-5]');
+        let discover = new RegExp('^6011');
+        
+        if (visa.test(n)) {
             $scope.imageName='visa2';
             $scope.cardType = '';
             if((digits.length == 13 || digits.length == 16) && $scope.cardNoValidate(n)){
                 $scope.isValid = true;
                 $scope.textColor='green';
                 $scope.cardType = "VISA (valid)";
-            }else if(digits.length >= 13){
-                $scope.isValid = true;
+            }else if(digits.length == 13 && !$scope.cardNoValidate(n)){
                 $scope.textColor='red';
                 $scope.cardType = "VISA (invalid)";
             }
         }
-        else if(start2 == '34' || start2 == '37'){
+        else if (amex.test(n)) {
             $scope.imageName='amex2';
             $scope.cardType = '';
             if(digits.length == 15 && $scope.cardNoValidate(n)){
@@ -31,13 +33,11 @@ app.controller('creditValidatorCtrl',['$scope',function($scope){
                 $scope.textColor='green';
                 $scope.cardType = "AMEX (valid)";
             }else if(digits.length >= 15){
-                $scope.isValid = true;
                 $scope.textColor='red';
                 $scope.cardType = "AMEX (invalid)";
             }
         }
-        else if(start2 == '50' || start2 == '51' || start2 == '52' ||
-            start2 == '53' || start2 == '54' || start2 == '55'){
+        else if (mastercard.test(n)) {
             $scope.imageName='mastercard2';
             $scope.cardType = '';
             if(digits.length == 16 && $scope.cardNoValidate(n)){
@@ -45,12 +45,11 @@ app.controller('creditValidatorCtrl',['$scope',function($scope){
                 $scope.textColor='green';
                 $scope.cardType = "MasterCard (valid)";
             }else if(digits.length >= 16){
-                $scope.isValid = true;
                 $scope.textColor='red';
                 $scope.cardType = "MasterCard (invalid)";
             }
         }
-        else if(start4 == '6011'){
+        else if (discover.test(n)) {
             $scope.imageName='discover2';
             $scope.cardType = '';
             if(digits.length == 16 && $scope.cardNoValidate(n)){
@@ -58,16 +57,12 @@ app.controller('creditValidatorCtrl',['$scope',function($scope){
                 $scope.textColor='green';
                 $scope.cardType = "Discover (valid)";
             }else if(digits.length >= 16){
-                $scope.isValid = true;
                 $scope.textColor='red';
                 $scope.cardType = "Discover (invalid)";
             }
         }
         else{
-            if(start1 == '4' || start2 == '34' || start2 == '37' || 
-            start2 == '50' || start2 == '51' || start2 == '52' ||
-            start2 == '53' || start2 == '54' || start2 == '55' ||
-            start4 == '6011'){
+            if(visa.test(n) || amex.test(n) || mastercard.test(n) || discover.test(n)){
                 $scope.cardType = '';
             }
             if(digits.length == 0){
@@ -81,7 +76,6 @@ app.controller('creditValidatorCtrl',['$scope',function($scope){
                 $scope.cardType = "Unknown (invalid)";
             }
         }
-
         $scope.formatCreditCard();
     }
 
@@ -126,6 +120,6 @@ app.controller('creditValidatorCtrl',['$scope',function($scope){
         block4 = ccNumString.substring(12, 16);
 
         formatted=block1 + block2 + block3 + block4;
-        $scope.cardNumber=formatted;
+        document.getElementById('credit-card').value=formatted;
     }
 }]);
